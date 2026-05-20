@@ -15,9 +15,9 @@ KangBan-vue3/       # Vue 3 前端
 
 ```bash
 cd KangBan-backend
-python -m venv venv
+python -m venv venv 
 source venv/Scripts/activate   # cd KangBan-backend 并在 Git Bash 激活虚拟环境
-pip install -r requirements.txt
+pip install -r requirements.txt //只用在第一次运行
 .\venv\Scripts\Activate.ps1  #cd D:\软件工程项目\KangBanLife\KangBan-backend 并在 Windows PowerShell 激活虚拟环境
 cp .env.example .env            # 编辑 .env 填入你的 API 密钥
 python seed_data.py             # 初始化数据库和种子数据
@@ -28,7 +28,7 @@ python app.py                   # 启动在 http://localhost:5000
 
 ```bash
 cd KangBan-vue3
-npm install
+npm install //只用在第一次运行
 npm run dev                     # 启动在 http://localhost:3000
 ```
 

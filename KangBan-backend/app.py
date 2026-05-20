@@ -12,7 +12,7 @@ def create_app():
 
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-    CORS(app, origins=True, supports_credentials=True)
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
     JWTManager(app)
 
