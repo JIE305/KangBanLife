@@ -12,7 +12,7 @@ def create_app():
 
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+    CORS(app, origins='*', supports_credentials=True)
 
     JWTManager(app)
 
@@ -31,6 +31,7 @@ def create_app():
     from api.posts import posts_bp
     from api.resources import resources_bp
     from api.chat import chat_bp
+    from api.matches import matches_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
     app.register_blueprint(user_bp, url_prefix='/api/v1/user')
@@ -38,6 +39,7 @@ def create_app():
     app.register_blueprint(posts_bp, url_prefix='/api/v1/posts')
     app.register_blueprint(resources_bp, url_prefix='/api/v1/resources')
     app.register_blueprint(chat_bp, url_prefix='/api/v1/chat')
+    app.register_blueprint(matches_bp, url_prefix='/api/v1/matches')
 
     return app
 

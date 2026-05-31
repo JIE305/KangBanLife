@@ -96,3 +96,23 @@ CREATE TABLE IF NOT EXISTS chat_messages (
 
 CREATE INDEX IF NOT EXISTS idx_chat_sessions_user_id ON chat_sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_session_id ON chat_messages(session_id);
+
+-- ============================================
+-- 6. 运动约球匹配表
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS sport_matches (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    sport_type VARCHAR(50) NOT NULL,
+    tag_class VARCHAR(100),
+    time_slot VARCHAR(50),
+    location VARCHAR(100),
+    description VARCHAR(500),
+    creator_name VARCHAR(50),
+    status TINYINT DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_matches_created_at ON sport_matches(created_at DESC);
