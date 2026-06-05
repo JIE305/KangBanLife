@@ -38,7 +38,7 @@
             <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div v-for="resource in firstAidResources" :key="resource.title"
                 class="resource-card p-4 rounded-2xl border cursor-pointer group text-center"
-                :class="[resource.bgClass, resource.borderClass]">
+                :class="[resource.bgClass, resource.borderClass]" @click="handleFirstAidClick(resource)">
                 <div
                   class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm group-hover: transition-all"
                   :class="[resource.iconClass, resource.iconHoverClass]">
@@ -54,8 +54,8 @@
             <h3 class="text-xl font-bold mb-6">大学生宿舍常备药清单</h3>
             <div class="space-y-4">
               <div v-for="med in medicines" :key="med.title"
-                class="flex items-start gap-4 p-4 hover:bg-slate-50 rounded-2xl transition-all"
-                :class="med.borderClass">
+                class="flex items-start gap-4 p-4 hover:bg-slate-50 rounded-2xl transition-all cursor-pointer"
+                :class="med.borderClass" @click="handleMedicineClick(med)">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" :class="med.iconBg">
                   <iconify-icon :icon="med.icon" width="24" :class="med.iconColor"></iconify-icon>
                 </div>
@@ -121,6 +121,16 @@
           </div>
         </div>
       </div>
+
+      <!-- Toast消息提示 -->
+      <Transition name="toast">
+        <div v-if="showToast"
+          class="fixed bottom-24 left-1/2 -translate-x-1/2 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 z-50"
+          :class="[toastBgClass, toastShadowClass]">
+          <iconify-icon icon="solar:check-circle-bold" width="18"></iconify-icon>
+          <span class="text-sm font-medium">{{ toastMessage }}</span>
+        </div>
+      </Transition>
     </main>
   </div>
 </template>
@@ -130,6 +140,51 @@ import { ref } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 
 const searchQuery = ref('')
+const showToast = ref(false)
+const toastMessage = ref('')
+const toastBgClass = ref('bg-emerald-500')
+const toastShadowClass = ref('shadow-emerald-200')
+
+const showToastMessage = (message, bgClass = 'bg-emerald-500', shadowClass = 'shadow-emerald-200') => {
+  toastMessage.value = message
+  toastBgClass.value = bgClass
+  toastShadowClass.value = shadowClass
+  showToast.value = true
+  setTimeout(() => { showToast.value = false }, 2000)
+}
+
+const getColorFromBgClass = (bgClass) => {
+  const colorMap = {
+    'bg-red-50': { bg: 'bg-red-500', shadow: 'shadow-red-200' },
+    'bg-orange-50': { bg: 'bg-orange-500', shadow: 'shadow-orange-200' },
+    'bg-blue-50': { bg: 'bg-blue-500', shadow: 'shadow-blue-200' },
+    'bg-yellow-50': { bg: 'bg-yellow-500', shadow: 'shadow-yellow-200' },
+    'bg-purple-50': { bg: 'bg-purple-500', shadow: 'shadow-purple-200' },
+    'bg-slate-50': { bg: 'bg-slate-500', shadow: 'shadow-slate-200' },
+    'bg-blue-100': { bg: 'bg-blue-500', shadow: 'shadow-blue-200' },
+    'bg-emerald-100': { bg: 'bg-emerald-500', shadow: 'shadow-emerald-200' },
+    'bg-orange-100': { bg: 'bg-orange-500', shadow: 'shadow-orange-200' }
+  }
+  return colorMap[bgClass] || { bg: 'bg-emerald-500', shadow: 'shadow-emerald-200' }
+}
+
+const handleFirstAidClick = (resource) => {
+  const messages = {
+    'CPR 心肺复苏': 'CPR心肺复苏操作要点：检查意识→呼救→检查呼吸→胸外按压→人工呼吸',
+    '海姆立克法': '海姆立克急救法：站在患者身后，双手环抱腹部，用力向上冲击',
+    '烫伤处理': '烫伤处理五字诀：冲、脱、泡、盖、送',
+    '中暑自救': '中暑急救：迅速转移至阴凉通风处，补充淡盐水',
+    '外伤止血': '外伤止血：直接压迫止血法，抬高患肢，必要时使用止血带',
+    '更多急救': '正在加载更多急救知识...'
+  }
+  const colorInfo = getColorFromBgClass(resource.bgClass)
+  showToastMessage(messages[resource.title] || '暂无详细信息', colorInfo.bg, colorInfo.shadow)
+}
+
+const handleMedicineClick = (med) => {
+  const colorInfo = getColorFromBgClass(med.iconBg)
+  showToastMessage(`已为您推荐「${med.title}」相关药品，请在医生指导下使用`, colorInfo.bg, colorInfo.shadow)
+}
 
 const firstAidResources = ref([
   {
@@ -257,3 +312,16 @@ const medicalFacilities = ref([
   }
 ])
 </script>
+
+<style scoped>
+.toast-enter-active,
+.toast-leave-active {
+  transition: all 0.3s ease;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 20px);
+}
+</style>

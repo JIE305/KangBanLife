@@ -105,7 +105,7 @@
                 </div>
                 <div class="p-5">
                   <h4 class="font-bold mb-1 group-hover:text-orange-600 transition-colors duration-300">{{ course.title
-                    }}</h4>
+                  }}</h4>
                   <p class="text-[10px] text-slate-400 mb-4">{{ course.desc }}</p>
                   <div class="flex items-center justify-between">
                     <div class="flex items-center gap-1 text-[10px] font-bold" :class="course.intensityClass">
@@ -259,7 +259,7 @@
                     <iconify-icon :icon="medal.icon" width="24"></iconify-icon>
                   </div>
                   <span class="text-[10px]" :class="medal.achieved ? 'text-slate-500' : 'text-slate-400'">{{ medal.label
-                    }}</span>
+                  }}</span>
                   <div v-if="!medal.achieved"
                     class="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full bg-slate-800 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
                     {{ medal.condition }}
@@ -298,7 +298,7 @@
                   @click="joinMatch(match)">
                   <div class="flex items-center justify-between mb-2">
                     <span class="px-2 py-0.5 text-[10px] font-bold rounded" :class="match.tagClass">{{ match.sport
-                    }}</span>
+                      }}</span>
                     <span class="text-[10px] text-slate-400">{{ match.time }} {{ match.location }}</span>
                   </div>
                   <p class="text-xs font-medium mb-2 group-hover:text-orange-600 transition-colors duration-300">{{
@@ -495,7 +495,7 @@ import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import { getMatchesAPI, createMatchAPI } from '@/api/matches'
 
-const isLoading = ref(true)
+const isLoading = ref(false)
 const showToast = ref(false)
 const toastMessage = ref('')
 const activeCourseTab = ref('全部')
